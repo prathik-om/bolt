@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit",
-    "db:generate-types": "supabase gen types typescript --project-id YOUR_PROJECT_ID > src/lib/database.types.ts"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
