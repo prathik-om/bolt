@@ -1,7 +1,16 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
+import { ColorSchemeScript, MantineProvider } from '@mantine/core'
+import { Notifications } from '@mantine/notifications'
+import { ModalsProvider } from '@mantine/modals'
 import { Providers } from '@/components/providers'
+import { theme } from '@/lib/theme'
+
+import '@mantine/core/styles.css'
+import '@mantine/notifications/styles.css'
+import '@mantine/dates/styles.css'
+import '@mantine/spotlight/styles.css'
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,10 +29,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body className={inter.className}>
-        <Providers>
-          {children}
-        </Providers>
+        <MantineProvider theme={theme}>
+          <ModalsProvider>
+            <Notifications />
+            <Providers>
+              {children}
+            </Providers>
+          </ModalsProvider>
+        </MantineProvider>
       </body>
     </html>
   )

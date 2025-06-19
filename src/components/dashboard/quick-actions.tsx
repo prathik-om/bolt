@@ -1,58 +1,73 @@
 'use client'
 
 import Link from 'next/link'
-import { TrendingUp, Users, GraduationCap, Zap } from 'lucide-react'
+import { SimpleGrid, Paper, Text, Group, ThemeIcon, Stack } from '@mantine/core'
+import { IconBolt, IconUsers, IconSchool } from '@tabler/icons-react'
 
 export function QuickActions() {
   const actions = [
     {
       title: 'Generate New Timetable',
       description: 'Use AI to create optimized schedules',
-      icon: Zap,
-      color: 'bg-gradient-to-r from-blue-600 to-indigo-600',
+      icon: IconBolt,
+      color: 'blue',
       href: '/generator'
     },
     {
       title: 'Manage Teachers',
       description: 'Add, edit, or remove teaching staff',
-      icon: Users,
-      color: 'bg-gradient-to-r from-emerald-600 to-teal-600',
+      icon: IconUsers,
+      color: 'green',
       href: '/teachers'
     },
     {
       title: 'Configure Classes',
       description: 'Set up grades, sections, and subjects',
-      icon: GraduationCap,
-      color: 'bg-gradient-to-r from-purple-600 to-pink-600',
+      icon: IconSchool,
+      color: 'violet',
       href: '/classes'
     }
   ]
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <Paper p="md" radius="md" withBorder>
+      <Text size="lg" fw={600} mb="md">Quick Actions</Text>
+      <SimpleGrid cols={{ base: 1, md: 3 }}>
         {actions.map((action) => {
           const Icon = action.icon
           return (
-            <Link
+            <Paper
               key={action.title}
+              component={Link}
               href={action.href}
-              className="group cursor-pointer rounded-xl p-6 text-white transition-all duration-200 hover:scale-105 hover:shadow-xl"
-              style={{ background: action.color }}
+              p="lg"
+              radius="md"
+              style={(theme) => ({
+                background: `linear-gradient(135deg, ${theme.colors[action.color][6]}, ${theme.colors[action.color][8]})`,
+                color: 'white',
+                textDecoration: 'none',
+                transition: 'transform 0.2s ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                },
+              })}
             >
-              <div className="flex items-center justify-between mb-4">
-                <Icon className="w-8 h-8 opacity-90" />
-                <div className="w-6 h-6 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
+              <Stack gap="md">
+                <Group justify="space-between">
+                  <ThemeIcon size="lg" variant="white" color={action.color}>
+                    <Icon size={24} />
+                  </ThemeIcon>
+                  <div style={{ width: 8, height: 8, backgroundColor: 'rgba(255,255,255,0.3)', borderRadius: '50%' }} />
+                </Group>
+                <div>
+                  <Text fw={600} size="lg" mb={4}>{action.title}</Text>
+                  <Text size="sm" opacity={0.9}>{action.description}</Text>
                 </div>
-              </div>
-              <h4 className="text-lg font-semibold mb-2">{action.title}</h4>
-              <p className="text-sm opacity-90">{action.description}</p>
-            </Link>
+              </Stack>
+            </Paper>
           )
         })}
-      </div>
-    </div>
+      </SimpleGrid>
+    </Paper>
   )
 }

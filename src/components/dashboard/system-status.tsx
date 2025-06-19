@@ -1,6 +1,7 @@
 'use client'
 
-import { CheckCircle, AlertTriangle, Clock } from 'lucide-react'
+import { Paper, Text, Stack, Group, ThemeIcon, Badge, Skeleton } from '@mantine/core'
+import { IconCheck, IconAlertTriangle, IconClock } from '@tabler/icons-react'
 import { useSystemStatus } from '@/hooks/use-system-status'
 
 export function SystemStatus() {
@@ -8,83 +9,87 @@ export function SystemStatus() {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div className="animate-pulse">
-          <div className="h-5 bg-gray-200 rounded w-1/3 mb-4"></div>
-          <div className="space-y-3">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-12 bg-gray-100 rounded-lg"></div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <Stack gap="md">
+        <Skeleton height={200} radius="md" />
+        <Skeleton height={150} radius="md" />
+      </Stack>
     )
   }
 
   return (
-    <div className="space-y-6">
+    <Stack gap="md">
       {/* System Status */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">System Status</h3>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-            <div className="flex items-center space-x-3">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-              <span className="text-green-800 font-medium">Database Connection</span>
-            </div>
-            <span className="text-sm text-green-600">Active</span>
-          </div>
+      <Paper p="md" radius="md" withBorder>
+        <Text size="lg" fw={600} mb="md">System Status</Text>
+        <Stack gap="sm">
+          <Group justify="space-between" p="sm" style={{ backgroundColor: 'var(--mantine-color-green-0)', borderRadius: 'var(--mantine-radius-sm)' }}>
+            <Group gap="sm">
+              <ThemeIcon color="green" variant="light" size="sm">
+                <IconCheck size={16} />
+              </ThemeIcon>
+              <Text fw={500} c="green.8">Database Connection</Text>
+            </Group>
+            <Badge color="green" variant="light" size="sm">Active</Badge>
+          </Group>
           
-          <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-            <div className="flex items-center space-x-3">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-              <span className="text-green-800 font-medium">Data Configuration</span>
-            </div>
-            <span className="text-sm text-green-600">Ready</span>
-          </div>
+          <Group justify="space-between" p="sm" style={{ backgroundColor: 'var(--mantine-color-green-0)', borderRadius: 'var(--mantine-radius-sm)' }}>
+            <Group gap="sm">
+              <ThemeIcon color="green" variant="light" size="sm">
+                <IconCheck size={16} />
+              </ThemeIcon>
+              <Text fw={500} c="green.8">Data Configuration</Text>
+            </Group>
+            <Badge color="green" variant="light" size="sm">Ready</Badge>
+          </Group>
           
-          <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
-            <div className="flex items-center space-x-3">
-              <AlertTriangle className="w-5 h-5 text-yellow-600" />
-              <span className="text-yellow-800 font-medium">AI Generation</span>
-            </div>
-            <span className="text-sm text-yellow-600">
+          <Group justify="space-between" p="sm" style={{ backgroundColor: 'var(--mantine-color-yellow-0)', borderRadius: 'var(--mantine-radius-sm)' }}>
+            <Group gap="sm">
+              <ThemeIcon color="yellow" variant="light" size="sm">
+                <IconAlertTriangle size={16} />
+              </ThemeIcon>
+              <Text fw={500} c="yellow.8">AI Generation</Text>
+            </Group>
+            <Badge color="yellow" variant="light" size="sm">
               {status?.hasGeneratedTimetables ? 'Generated' : 'Pending'}
-            </span>
-          </div>
-        </div>
-      </div>
+            </Badge>
+          </Group>
+        </Stack>
+      </Paper>
 
       {/* Getting Started */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Getting Started</h3>
-        <div className="space-y-3">
-          <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50">
-            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-            <span className="text-sm text-gray-700">Set up teachers and their subjects</span>
-          </div>
-          <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50">
-            <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-            <span className="text-sm text-gray-700">Configure subjects and requirements</span>
-          </div>
-          <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50">
-            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-            <span className="text-sm text-gray-700">Define classes and sections</span>
-          </div>
-          <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50">
-            <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-            <span className="text-sm text-gray-700">Generate optimized timetables</span>
-          </div>
-        </div>
-      </div>
+      <Paper p="md" radius="md" withBorder>
+        <Text size="lg" fw={600} mb="md">Getting Started</Text>
+        <Stack gap="xs">
+          {[
+            'Set up teachers and their subjects',
+            'Configure subjects and requirements',
+            'Define classes and sections',
+            'Generate optimized timetables'
+          ].map((step, index) => (
+            <Group key={index} gap="sm" p="xs">
+              <div style={{ 
+                width: 8, 
+                height: 8, 
+                backgroundColor: ['var(--mantine-color-blue-6)', 'var(--mantine-color-green-6)', 'var(--mantine-color-violet-6)', 'var(--mantine-color-orange-6)'][index],
+                borderRadius: '50%' 
+              }} />
+              <Text size="sm" c="dimmed">{step}</Text>
+            </Group>
+          ))}
+        </Stack>
+      </Paper>
 
       {/* Last Updated */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-        <div className="flex items-center space-x-2 text-sm text-gray-500">
-          <Clock className="w-4 h-4" />
-          <span>Last updated: {new Date().toLocaleDateString()}</span>
-        </div>
-      </div>
-    </div>
+      <Paper p="sm" radius="md" withBorder>
+        <Group gap="sm">
+          <ThemeIcon color="gray" variant="light" size="sm">
+            <IconClock size={16} />
+          </ThemeIcon>
+          <Text size="sm" c="dimmed">
+            Last updated: {new Date().toLocaleDateString()}
+          </Text>
+        </Group>
+      </Paper>
+    </Stack>
   )
 }

@@ -1,4 +1,6 @@
 import { Suspense } from 'react'
+import { Container, Stack, Paper, Group, ThemeIcon, Text } from '@mantine/core'
+import { IconBrandOpenai } from '@tabler/icons-react'
 import { DashboardShell } from '@/components/dashboard/dashboard-shell'
 import { DashboardStats } from '@/components/dashboard/dashboard-stats'
 import { QuickActions } from '@/components/dashboard/quick-actions'
@@ -8,41 +10,48 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner'
 export default function HomePage() {
   return (
     <DashboardShell>
-      <div className="space-y-8">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-sm p-8 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">AI Timetable Generator</h1>
-              <p className="text-blue-100 text-lg">Intelligent scheduling for K-12 education</p>
-            </div>
-            <div className="hidden md:block">
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                <div className="w-8 h-8 bg-white rounded-full"></div>
+      <Container size="xl">
+        <Stack gap="xl">
+          {/* Header */}
+          <Paper
+            p="xl"
+            radius="md"
+            style={(theme) => ({
+              background: `linear-gradient(135deg, ${theme.colors.blue[6]}, ${theme.colors.cyan[6]})`,
+              color: 'white',
+            })}
+          >
+            <Group justify="space-between">
+              <div>
+                <Text size="xl" fw={700} mb="xs">AI Timetable Generator</Text>
+                <Text size="lg" opacity={0.9}>Intelligent scheduling for K-12 education</Text>
               </div>
-            </div>
-          </div>
-        </div>
+              <ThemeIcon size={64} variant="white" color="blue" radius="md">
+                <IconBrandOpenai size={32} />
+              </ThemeIcon>
+            </Group>
+          </Paper>
 
-        {/* Dashboard Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
-            <Suspense fallback={<LoadingSpinner />}>
-              <DashboardStats />
-            </Suspense>
+          {/* Dashboard Content */}
+          <Group align="flex-start" gap="xl">
+            <Stack flex={2} gap="xl">
+              <Suspense fallback={<LoadingSpinner />}>
+                <DashboardStats />
+              </Suspense>
+              
+              <Suspense fallback={<LoadingSpinner />}>
+                <QuickActions />
+              </Suspense>
+            </Stack>
             
-            <Suspense fallback={<LoadingSpinner />}>
-              <QuickActions />
-            </Suspense>
-          </div>
-          
-          <div className="space-y-8">
-            <Suspense fallback={<LoadingSpinner />}>
-              <SystemStatus />
-            </Suspense>
-          </div>
-        </div>
-      </div>
+            <Stack flex={1} gap="xl">
+              <Suspense fallback={<LoadingSpinner />}>
+                <SystemStatus />
+              </Suspense>
+            </Stack>
+          </Group>
+        </Stack>
+      </Container>
     </DashboardShell>
   )
 }

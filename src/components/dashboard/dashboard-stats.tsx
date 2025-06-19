@@ -1,24 +1,19 @@
 'use client'
 
 import { useSchoolStats } from '@/hooks/use-school-stats'
-import { Users, BookOpen, GraduationCap, Calendar } from 'lucide-react'
-import { StatsCard } from '@/components/ui/stats-card'
+import { SimpleGrid, Paper, Text, Group, ThemeIcon, Skeleton } from '@mantine/core'
+import { IconUsers, IconBook, IconSchool, IconCalendar } from '@tabler/icons-react'
 
 export function DashboardStats() {
   const { data: stats, isLoading } = useSchoolStats()
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }}>
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="animate-pulse">
-            <div className="bg-white rounded-xl p-6 border border-gray-200">
-              <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-              <div className="h-8 bg-gray-200 rounded w-1/3"></div>
-            </div>
-          </div>
+          <Skeleton key={i} height={120} radius="md" />
         ))}
-      </div>
+      </SimpleGrid>
     )
   }
 
@@ -26,38 +21,51 @@ export function DashboardStats() {
     {
       title: 'Teachers',
       value: stats?.teachers || 0,
-      icon: Users,
+      icon: IconUsers,
       color: 'blue',
-      href: '/teachers'
     },
     {
       title: 'Subjects',
       value: stats?.subjects || 0,
-      icon: BookOpen,
-      color: 'emerald',
-      href: '/subjects'
+      icon: IconBook,
+      color: 'green',
     },
     {
       title: 'Classes',
       value: stats?.classSections || 0,
-      icon: GraduationCap,
-      color: 'purple',
-      href: '/classes'
+      icon: IconSchool,
+      color: 'violet',
     },
     {
       title: 'Timetables',
       value: stats?.timetables || 0,
-      icon: Calendar,
+      icon: IconCalendar,
       color: 'orange',
-      href: '/timetables'
     }
   ]
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {statsData.map((stat) => (
-        <StatsCard key={stat.title} {...stat} />
-      ))}
-    </div>
+    <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }}>
+      {statsData.map((stat) => {
+        const Icon = stat.icon
+        return (
+          <Paper key={stat.title} p="md" radius="md" withBorder>
+            <Group justify="space-between">
+              <div>
+                <Text c="dimmed" size="sm" tt="uppercase" fw={700}>
+                  {stat.title}
+                </Text>
+                <Text fw={700} size="xl">
+                  {stat.value}
+                </Text>
+              </div>
+              <ThemeIcon color={stat.color} variant="light" size={38} radius="md">
+                <Icon size={22} stroke={1.5} />
+              </ThemeIcon>
+            </Group>
+          </Paper>
+        )
+      })}
+    </SimpleGrid>
   )
 }

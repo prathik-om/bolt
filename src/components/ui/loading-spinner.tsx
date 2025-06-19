@@ -1,21 +1,13 @@
-import { Loader2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { Loader, Center } from '@mantine/core'
 
 interface LoadingSpinnerProps {
-  className?: string
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 }
 
-export function LoadingSpinner({ className, size = 'md' }: LoadingSpinnerProps) {
-  const sizeClasses = {
-    sm: 'w-4 h-4',
-    md: 'w-6 h-6',
-    lg: 'w-8 h-8'
-  }
-
+export function LoadingSpinner({ size = 'md' }: LoadingSpinnerProps) {
   return (
-    <div className="flex items-center justify-center p-4">
-      <Loader2 className={cn('animate-spin text-blue-600', sizeClasses[size], className)} />
-    </div>
+    <Center p="xl">
+      <Loader size={size} />
+    </Center>
   )
 }
