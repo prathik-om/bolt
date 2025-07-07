@@ -1,7 +1,25 @@
 'use client'
 
-import { Paper, Text, Stack, Group, ThemeIcon, Badge, Skeleton } from '@mantine/core'
-import { IconCheck, IconAlertTriangle, IconClock } from '@tabler/icons-react'
+import { 
+  Card, 
+  CardContent, 
+  Typography, 
+  Box, 
+  Chip, 
+  Stack,
+  Avatar,
+  Skeleton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText
+} from '@mui/material'
+import { 
+  CheckCircle as CheckCircleIcon,
+  Warning as WarningIcon,
+  Schedule as ScheduleIcon,
+  FiberManualRecord as DotIcon
+} from '@mui/icons-material'
 import { useSystemStatus } from '@/hooks/use-system-status'
 
 export function SystemStatus() {
@@ -9,87 +27,132 @@ export function SystemStatus() {
 
   if (isLoading) {
     return (
-      <Stack gap="md">
-        <Skeleton height={200} radius="md" />
-        <Skeleton height={150} radius="md" />
+      <Stack spacing={3}>
+        <Skeleton variant="rectangular" height={200} sx={{ borderRadius: 3 }} />
+        <Skeleton variant="rectangular" height={150} sx={{ borderRadius: 3 }} />
       </Stack>
     )
   }
 
   return (
-    <Stack gap="md">
+    <Stack spacing={3}>
       {/* System Status */}
-      <Paper p="md" radius="md" withBorder>
-        <Text size="lg" fw={600} mb="md">System Status</Text>
-        <Stack gap="sm">
-          <Group justify="space-between" p="sm" style={{ backgroundColor: 'var(--mantine-color-green-0)', borderRadius: 'var(--mantine-radius-sm)' }}>
-            <Group gap="sm">
-              <ThemeIcon color="green" variant="light" size="sm">
-                <IconCheck size={16} />
-              </ThemeIcon>
-              <Text fw={500} c="green.8">Database Connection</Text>
-            </Group>
-            <Badge color="green" variant="light" size="sm">Active</Badge>
-          </Group>
-          
-          <Group justify="space-between" p="sm" style={{ backgroundColor: 'var(--mantine-color-green-0)', borderRadius: 'var(--mantine-radius-sm)' }}>
-            <Group gap="sm">
-              <ThemeIcon color="green" variant="light" size="sm">
-                <IconCheck size={16} />
-              </ThemeIcon>
-              <Text fw={500} c="green.8">Data Configuration</Text>
-            </Group>
-            <Badge color="green" variant="light" size="sm">Ready</Badge>
-          </Group>
-          
-          <Group justify="space-between" p="sm" style={{ backgroundColor: 'var(--mantine-color-yellow-0)', borderRadius: 'var(--mantine-radius-sm)' }}>
-            <Group gap="sm">
-              <ThemeIcon color="yellow" variant="light" size="sm">
-                <IconAlertTriangle size={16} />
-              </ThemeIcon>
-              <Text fw={500} c="yellow.8">AI Generation</Text>
-            </Group>
-            <Badge color="yellow" variant="light" size="sm">
-              {status?.hasGeneratedTimetables ? 'Generated' : 'Pending'}
-            </Badge>
-          </Group>
-        </Stack>
-      </Paper>
+      <Card>
+        <CardContent>
+          <Typography variant="h6" fontWeight={600} sx={{ mb: 3 }}>
+            System Status
+          </Typography>
+          <Stack spacing={2}>
+            <Box 
+              sx={{ 
+                p: 2, 
+                bgcolor: '#e8f5e8', 
+                borderRadius: 2,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Avatar sx={{ bgcolor: '#388e3c', width: 32, height: 32 }}>
+                  <CheckCircleIcon sx={{ fontSize: 18 }} />
+                </Avatar>
+                <Typography fontWeight={600} color="#2e7d32">
+                  Database Connection
+                </Typography>
+              </Box>
+              <Chip label="Active" color="success" size="small" />
+            </Box>
+            
+            <Box 
+              sx={{ 
+                p: 2, 
+                bgcolor: '#e8f5e8', 
+                borderRadius: 2,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Avatar sx={{ bgcolor: '#388e3c', width: 32, height: 32 }}>
+                  <CheckCircleIcon sx={{ fontSize: 18 }} />
+                </Avatar>
+                <Typography fontWeight={600} color="#2e7d32">
+                  Data Configuration
+                </Typography>
+              </Box>
+              <Chip label="Ready" color="success" size="small" />
+            </Box>
+            
+            <Box 
+              sx={{ 
+                p: 2, 
+                bgcolor: '#fff3e0', 
+                borderRadius: 2,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Avatar sx={{ bgcolor: '#f57c00', width: 32, height: 32 }}>
+                  <WarningIcon sx={{ fontSize: 18 }} />
+                </Avatar>
+                <Typography fontWeight={600} color="#ef6c00">
+                  AI Generation
+                </Typography>
+              </Box>
+              <Chip 
+                label={status?.hasGeneratedTimetables ? 'Generated' : 'Pending'} 
+                color="warning" 
+                size="small" 
+              />
+            </Box>
+          </Stack>
+        </CardContent>
+      </Card>
 
       {/* Getting Started */}
-      <Paper p="md" radius="md" withBorder>
-        <Text size="lg" fw={600} mb="md">Getting Started</Text>
-        <Stack gap="xs">
-          {[
-            'Set up teachers and their subjects',
-            'Configure subjects and requirements',
-            'Define classes and sections',
-            'Generate optimized timetables'
-          ].map((step, index) => (
-            <Group key={index} gap="sm" p="xs">
-              <div style={{ 
-                width: 8, 
-                height: 8, 
-                backgroundColor: ['var(--mantine-color-blue-6)', 'var(--mantine-color-green-6)', 'var(--mantine-color-violet-6)', 'var(--mantine-color-orange-6)'][index],
-                borderRadius: '50%' 
-              }} />
-              <Text size="sm" c="dimmed">{step}</Text>
-            </Group>
-          ))}
-        </Stack>
-      </Paper>
+      <Card>
+        <CardContent>
+          <Typography variant="h6" fontWeight={600} sx={{ mb: 3 }}>
+            Getting Started
+          </Typography>
+          <List dense>
+            {[
+              { text: 'Set up teachers and their subjects', color: '#1976d2' },
+              { text: 'Configure subjects and requirements', color: '#388e3c' },
+              { text: 'Define classes and sections', color: '#7b1fa2' },
+              { text: 'Generate optimized timetables', color: '#f57c00' }
+            ].map((step, index) => (
+              <ListItem key={index} sx={{ px: 0 }}>
+                <ListItemIcon sx={{ minWidth: 32 }}>
+                  <DotIcon sx={{ color: step.color, fontSize: 12 }} />
+                </ListItemIcon>
+                <ListItemText 
+                  primary={step.text}
+                  primaryTypographyProps={{ variant: 'body2', color: 'text.secondary' }}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </CardContent>
+      </Card>
 
       {/* Last Updated */}
-      <Paper p="sm" radius="md" withBorder>
-        <Group gap="sm">
-          <ThemeIcon color="gray" variant="light" size="sm">
-            <IconClock size={16} />
-          </ThemeIcon>
-          <Text size="sm" c="dimmed">
-            Last updated: {new Date().toLocaleDateString()}
-          </Text>
-        </Group>
-      </Paper>
+      <Card>
+        <CardContent>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Avatar sx={{ bgcolor: 'grey.100', color: 'text.secondary', width: 32, height: 32 }}>
+              <ScheduleIcon sx={{ fontSize: 18 }} />
+            </Avatar>
+            <Typography variant="body2" color="text.secondary">
+              Last updated: {new Date().toLocaleDateString()}
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
     </Stack>
   )
 }

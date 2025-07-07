@@ -1,8 +1,25 @@
 'use client'
 
 import { useState } from 'react'
-import { Container, Stack, Group, Text, Button, TextInput, Select, Paper } from '@mantine/core'
-import { IconPlus, IconSearch, IconFilter } from '@tabler/icons-react'
+import { 
+  Container, 
+  Box, 
+  Typography, 
+  Button, 
+  TextField, 
+  Select, 
+  MenuItem, 
+  FormControl,
+  InputLabel,
+  Card,
+  CardContent,
+  InputAdornment
+} from '@mui/material'
+import { 
+  Add as AddIcon,
+  Search as SearchIcon,
+  FilterList as FilterIcon
+} from '@mui/icons-material'
 import { TeacherList } from './teacher-list'
 import { TeacherForm } from './teacher-form'
 import { useTeachers } from '@/hooks/use-teachers'
@@ -15,51 +32,66 @@ export function TeacherManagement() {
   const { data: teachers, isLoading } = useTeachers()
 
   return (
-    <Container size="xl">
-      <Stack gap="xl">
+    <Container maxWidth="xl">
+      <Box sx={{ py: 4 }}>
         {/* Header */}
-        <Group justify="space-between">
-          <div>
-            <Text size="xl" fw={700}>Teacher Management</Text>
-            <Text c="dimmed" mt={4}>Manage teaching staff and their subject assignments</Text>
-          </div>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 4 }}>
+          <Box>
+            <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
+              Teacher Management
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Manage teaching staff and their subject assignments
+            </Typography>
+          </Box>
           <Button
-            leftSection={<IconPlus size={16} />}
+            variant="contained"
+            startIcon={<AddIcon />}
             onClick={() => setIsAddModalOpen(true)}
+            sx={{ borderRadius: 2 }}
           >
             Add Teacher
           </Button>
-        </Group>
+        </Box>
 
         {/* Filters */}
-        <Paper p="md" radius="md" withBorder>
-          <Group justify="space-between">
-            <TextInput
-              placeholder="Search teachers..."
-              leftSection={<IconSearch size={16} />}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.currentTarget.value)}
-              style={{ flex: 1, maxWidth: 400 }}
-            />
+        <Card sx={{ mb: 4 }}>
+          <CardContent>
+            <Box sx={{ display: 'flex', gap: 3, alignItems: 'center', flexWrap: 'wrap' }}>
+              <TextField
+                placeholder="Search teachers..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{ flex: 1, maxWidth: 400 }}
+              />
 
-            <Select
-              placeholder="All Departments"
-              leftSection={<IconFilter size={16} />}
-              value={filterDepartment}
-              onChange={(value) => setFilterDepartment(value || 'all')}
-              data={[
-                { value: 'all', label: 'All Departments' },
-                { value: 'mathematics', label: 'Mathematics' },
-                { value: 'science', label: 'Science' },
-                { value: 'english', label: 'English' },
-                { value: 'social_studies', label: 'Social Studies' },
-                { value: 'arts', label: 'Arts' },
-                { value: 'physical_education', label: 'Physical Education' },
-              ]}
-              style={{ minWidth: 200 }}
-            />
-          </Group>
-        </Paper>
+              <FormControl sx={{ minWidth: 200 }}>
+                <InputLabel>Department</InputLabel>
+                <Select
+                  value={filterDepartment}
+                  label="Department"
+                  onChange={(e) => setFilterDepartment(e.target.value)}
+                  startAdornment={<FilterIcon sx={{ mr: 1, color: 'action.active' }} />}
+                >
+                  <MenuItem value="all">All Departments</MenuItem>
+                  <MenuItem value="mathematics">Mathematics</MenuItem>
+                  <MenuItem value="science">Science</MenuItem>
+                  <MenuItem value="english">English</MenuItem>
+                  <MenuItem value="social_studies">Social Studies</MenuItem>
+                  <MenuItem value="arts">Arts</MenuItem>
+                  <MenuItem value="physical_education">Physical Education</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </CardContent>
+        </Card>
 
         {/* Teacher List */}
         <TeacherList 
@@ -76,7 +108,7 @@ export function TeacherManagement() {
             onSuccess={() => setIsAddModalOpen(false)}
           />
         )}
-      </Stack>
+      </Box>
     </Container>
   )
 }

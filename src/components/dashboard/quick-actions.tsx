@@ -1,73 +1,108 @@
 'use client'
 
 import Link from 'next/link'
-import { SimpleGrid, Paper, Text, Group, ThemeIcon, Stack } from '@mantine/core'
-import { IconBolt, IconUsers, IconSchool } from '@tabler/icons-react'
+import { 
+  Card, 
+  CardContent, 
+  Typography, 
+  Grid, 
+  Box,
+  Avatar,
+  alpha
+} from '@mui/material'
+import { 
+  Bolt as BoltIcon,
+  People as PeopleIcon,
+  School as SchoolIcon
+} from '@mui/icons-material'
 
 export function QuickActions() {
   const actions = [
     {
       title: 'Generate New Timetable',
       description: 'Use AI to create optimized schedules',
-      icon: IconBolt,
-      color: 'blue',
+      icon: BoltIcon,
+      color: '#1976d2',
+      bgColor: '#e3f2fd',
       href: '/generator'
     },
     {
       title: 'Manage Teachers',
       description: 'Add, edit, or remove teaching staff',
-      icon: IconUsers,
-      color: 'green',
+      icon: PeopleIcon,
+      color: '#388e3c',
+      bgColor: '#e8f5e8',
       href: '/teachers'
     },
     {
       title: 'Configure Classes',
       description: 'Set up grades, sections, and subjects',
-      icon: IconSchool,
-      color: 'violet',
+      icon: SchoolIcon,
+      color: '#7b1fa2',
+      bgColor: '#f3e5f5',
       href: '/classes'
     }
   ]
 
   return (
-    <Paper p="md" radius="md" withBorder>
-      <Text size="lg" fw={600} mb="md">Quick Actions</Text>
-      <SimpleGrid cols={{ base: 1, md: 3 }}>
-        {actions.map((action) => {
-          const Icon = action.icon
-          return (
-            <Paper
-              key={action.title}
-              component={Link}
-              href={action.href}
-              p="lg"
-              radius="md"
-              style={(theme) => ({
-                background: `linear-gradient(135deg, ${theme.colors[action.color][6]}, ${theme.colors[action.color][8]})`,
-                color: 'white',
-                textDecoration: 'none',
-                transition: 'transform 0.2s ease',
-                '&:hover': {
-                  transform: 'translateY(-2px)',
-                },
-              })}
-            >
-              <Stack gap="md">
-                <Group justify="space-between">
-                  <ThemeIcon size="lg" variant="white" color={action.color}>
-                    <Icon size={24} />
-                  </ThemeIcon>
-                  <div style={{ width: 8, height: 8, backgroundColor: 'rgba(255,255,255,0.3)', borderRadius: '50%' }} />
-                </Group>
-                <div>
-                  <Text fw={600} size="lg" mb={4}>{action.title}</Text>
-                  <Text size="sm" opacity={0.9}>{action.description}</Text>
-                </div>
-              </Stack>
-            </Paper>
-          )
-        })}
-      </SimpleGrid>
-    </Paper>
+    <Card>
+      <CardContent>
+        <Typography variant="h6" fontWeight={600} sx={{ mb: 3 }}>
+          Quick Actions
+        </Typography>
+        <Grid container spacing={2}>
+          {actions.map((action) => {
+            const Icon = action.icon
+            return (
+              <Grid item xs={12} md={4} key={action.title}>
+                <Card
+                  component={Link}
+                  href={action.href}
+                  sx={{
+                    textDecoration: 'none',
+                    background: `linear-gradient(135deg, ${action.color}, ${alpha(action.color, 0.8)})`,
+                    color: 'white',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: `0 12px 24px ${alpha(action.color, 0.3)}`,
+                    },
+                  }}
+                >
+                  <CardContent>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
+                      <Avatar 
+                        sx={{ 
+                          bgcolor: 'rgba(255,255,255,0.2)',
+                          color: 'white',
+                          width: 48,
+                          height: 48,
+                        }}
+                      >
+                        <Icon sx={{ fontSize: 24 }} />
+                      </Avatar>
+                      <Box 
+                        sx={{ 
+                          width: 8, 
+                          height: 8, 
+                          bgcolor: 'rgba(255,255,255,0.3)', 
+                          borderRadius: '50%' 
+                        }} 
+                      />
+                    </Box>
+                    <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
+                      {action.title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                      {action.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            )
+          })}
+        </Grid>
+      </CardContent>
+    </Card>
   )
 }

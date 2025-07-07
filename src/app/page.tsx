@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
-import { Container, Stack, Paper, Group, ThemeIcon, Text } from '@mantine/core'
-import { IconBrandOpenai } from '@tabler/icons-react'
+import { Container, Box, Card, CardContent, Typography, Avatar } from '@mui/material'
+import { SmartToy as SmartToyIcon } from '@mui/icons-material'
 import { DashboardShell } from '@/components/dashboard/dashboard-shell'
 import { DashboardStats } from '@/components/dashboard/dashboard-stats'
 import { QuickActions } from '@/components/dashboard/quick-actions'
@@ -10,47 +10,61 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner'
 export default function HomePage() {
   return (
     <DashboardShell>
-      <Container size="xl">
-        <Stack gap="xl">
+      <Container maxWidth="xl">
+        <Box sx={{ py: 4 }}>
           {/* Header */}
-          <Paper
-            p="xl"
-            radius="md"
-            style={(theme) => ({
-              background: `linear-gradient(135deg, ${theme.colors.blue[6]}, ${theme.colors.cyan[6]})`,
+          <Card 
+            sx={{ 
+              mb: 4,
+              background: 'linear-gradient(135deg, #1976d2, #0288d1)',
               color: 'white',
-            })}
+            }}
           >
-            <Group justify="space-between">
-              <div>
-                <Text size="xl" fw={700} mb="xs">AI Timetable Generator</Text>
-                <Text size="lg" opacity={0.9}>Intelligent scheduling for K-12 education</Text>
-              </div>
-              <ThemeIcon size={64} variant="white" color="blue" radius="md">
-                <IconBrandOpenai size={32} />
-              </ThemeIcon>
-            </Group>
-          </Paper>
+            <CardContent sx={{ p: 4 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Box>
+                  <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
+                    AI Timetable Generator
+                  </Typography>
+                  <Typography variant="h6" sx={{ opacity: 0.9 }}>
+                    Intelligent scheduling for K-12 education
+                  </Typography>
+                </Box>
+                <Avatar 
+                  sx={{ 
+                    bgcolor: 'rgba(255,255,255,0.2)',
+                    color: 'white',
+                    width: 80,
+                    height: 80,
+                  }}
+                >
+                  <SmartToyIcon sx={{ fontSize: 40 }} />
+                </Avatar>
+              </Box>
+            </CardContent>
+          </Card>
 
           {/* Dashboard Content */}
-          <Group align="flex-start" gap="xl">
-            <Stack flex={2} gap="xl">
-              <Suspense fallback={<LoadingSpinner />}>
-                <DashboardStats />
-              </Suspense>
+          <Box sx={{ display: 'flex', gap: 4, flexDirection: { xs: 'column', lg: 'row' } }}>
+            <Box sx={{ flex: 2 }}>
+              <Box sx={{ mb: 4 }}>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <DashboardStats />
+                </Suspense>
+              </Box>
               
               <Suspense fallback={<LoadingSpinner />}>
                 <QuickActions />
               </Suspense>
-            </Stack>
+            </Box>
             
-            <Stack flex={1} gap="xl">
+            <Box sx={{ flex: 1 }}>
               <Suspense fallback={<LoadingSpinner />}>
                 <SystemStatus />
               </Suspense>
-            </Stack>
-          </Group>
-        </Stack>
+            </Box>
+          </Box>
+        </Box>
       </Container>
     </DashboardShell>
   )

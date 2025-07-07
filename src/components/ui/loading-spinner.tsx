@@ -1,13 +1,20 @@
-import { Loader, Center } from '@mantine/core'
+import { Box, CircularProgress } from '@mui/material'
 
 interface LoadingSpinnerProps {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: number
 }
 
-export function LoadingSpinner({ size = 'md' }: LoadingSpinnerProps) {
+export function LoadingSpinner({ size = 40 }: LoadingSpinnerProps) {
   return (
-    <Center p="xl">
-      <Loader size={size} />
-    </Center>
+    <Box 
+      sx={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        p: 4 
+      }}
+    >
+      <CircularProgress size={size} />
+    </Box>
   )
 }
